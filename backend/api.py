@@ -39,3 +39,16 @@ def recommendation():
         "barricades": 12,
         "message": "Deploy maximum traffic control resources."
     }
+@app.get("/hotspots")
+def hotspots():
+
+    df = pd.read_csv("datasets/processed_events.csv")
+
+    hotspots = (
+        df.groupby("junction")
+          .size()
+          .sort_values(ascending=False)
+          .head(10)
+    )
+
+    return hotspots.to_dict()
